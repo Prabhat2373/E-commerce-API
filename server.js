@@ -3,8 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 const port = process.env.PORT || 8000;
 const dotenv = require('dotenv');
-const AllRoutes = require('./routes/AllRoutes')
+const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
+const SellerRoute = require("./routes/SellersRoute");
 dotenv.config({
     path: './config.env',
 });
@@ -22,12 +23,12 @@ mongoose
         useUnifiedTopology: true
     })
     .then(() => {
-        // console.log(conn.connection);
         console.log('DB connection SUCCESS!');
     });
 app.use(cors())
 app.use(express.json());
-app.use("/api/user", AllRoutes)
+app.use("/api/user", UserRoutes)
+app.use("/api/user", SellerRoute)
 
 app.listen(port, () => {
     console.log(`Server is Running on http://localhost:${port}`);

@@ -1,8 +1,8 @@
 const { promisify } = require('util')
-const User = require('./../Model/Model');
+const User = require('../Model/UserModel');
 const jwt = require("jsonwebtoken");
-// const AppError = require("./../utils/appError")
-const catchAsync = require("./../utils/catchAsync")
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("../utils/AppError")
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -16,6 +16,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
+        username: req.body.username,
+        isSeller: false,
     });
 
     const token = signToken(RegisterUser._id);
@@ -29,7 +31,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
-
+    
     // 1) check email and passwords exists
     if (!email || !password) {
         // next(new AppError("Please Prove Email and Password", 400));
@@ -38,7 +40,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     // 2) check if the user exists
     const user = await User.findOne({ email }).select("+password");
-    // console.log(user)
+    console.log(user)
 
     if (!user || !await user.correctPassword(password, user.password)) {
         return new Error("Incorrect email or password");
@@ -50,6 +52,7 @@ exports.login = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "SUCCESS",
         message: "Login Success! User Authorized",
+        isSeller:user,
         token
     });
 })
@@ -74,10 +77,10 @@ exports.protect = catchAsync(async (req, res, next) => {
         return next(new AppError('The user belonging to this Token does no longer exists', 401))
     }
     // 4) Check if changed password after the JWT was issued
-    if (currentUser.changePasswordAfter(decoded.iat)) {
-        return next(new AppError('User Recently Changed Password, Please Login Again', 401))
+    // if (currentUser.changePasswordAfter(decoded.iat)) {
+    //     return next(new AppError('User Recently Changed Password, Please Login Again', 401))
 
-    }
+    // }
 
     // Grant Access To Protected Route
     req.user = currentUser

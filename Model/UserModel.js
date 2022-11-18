@@ -23,19 +23,13 @@ const Schema = mongoose.Schema({
         minlength: 8,
         select: false
     },
-    passwordConfirm: {
+    username: {
         type: String,
-        // required: [false, 'please provide confirmation of password'],
-        required: false,
-        minlength: 8,
-        validate: {
-            // This will only runs on save
-            validator: function (el) {
-                return el === this.password
-            },
-            message: "Passwords are not the same"
-        },
-        select: false
+        required: [true, 'please provide your username and should be unique'],
+        // unique: true
+    },
+    isSeller:{
+        type: Boolean,
     }
 });
 
