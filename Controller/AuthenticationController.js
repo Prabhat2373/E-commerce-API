@@ -2,7 +2,8 @@ const { promisify } = require('util')
 const User = require('../Model/UserModel');
 const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
-const AppError = require("../utils/AppError")
+const AppError = require("../utils/AppError");
+const upload = require("../middlewere/upload");
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -11,14 +12,24 @@ const signToken = (id) => {
 }
 
 exports.signup = catchAsync(async (req, res, next) => {
+    console.log("BODY :",req.body);
+
     const RegisterUser = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        passwordConfirm: req.body.passwordConfirm,
         username: req.body.username,
         isSeller: false,
     });
+    // await upload(req, res);
+    // console.log(req.files);
+    // console.log("BODY :", req.body);
+
+    // if (req.files.length <= 0) {
+    //     return res
+    //         .status(400)
+    //         .send({ message: "You must select at least 1 file." });
+    // }
 
     const token = signToken(RegisterUser._id);
 
@@ -26,12 +37,13 @@ exports.signup = catchAsync(async (req, res, next) => {
         status: 'SUCCESS',
         token: token,
         data: RegisterUser,
+        message: "File is Uploaded"
     });
     next();
 });
 exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
-    
+
     // 1) check email and passwords exists
     if (!email || !password) {
         // next(new AppError("Please Prove Email and Password", 400));
@@ -52,7 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "SUCCESS",
         message: "Login Success! User Authorized",
-        isSeller:user,
+        isSeller: user,
         token
     });
 })

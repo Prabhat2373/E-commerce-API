@@ -14,9 +14,6 @@ const Schema = mongoose.Schema({
         unique: true,
         lowercase: true,
     },
-    photo: {
-        type: String,
-    },
     password: {
         type: String,
         required: [true, 'please provide a password'],
@@ -26,9 +23,9 @@ const Schema = mongoose.Schema({
     username: {
         type: String,
         required: [true, 'please provide your username and should be unique'],
-        // unique: true
+
     },
-    isSeller:{
+    isSeller: {
         type: Boolean,
     }
 });

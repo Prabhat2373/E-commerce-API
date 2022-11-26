@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
+const bodyParser = require("body-parser");
 dotenv.config({
     path: './config.env',
 });
@@ -20,12 +21,13 @@ mongoose
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     })
     .then(() => {
         console.log('DB connection SUCCESS!');
     });
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/user", UserRoutes)
 app.use("/api/user", SellerRoute)
