@@ -22,7 +22,7 @@ const Schema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: [true, 'please provide your username and should be unique'],
+        required: [false, 'please provide your username and should be unique'],
 
     },
     isSeller: {

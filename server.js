@@ -7,6 +7,10 @@ const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
 const bodyParser = require("body-parser");
+const Cart = require("./Model/CartModel")
+const upload = require("multer");
+const Product = require("./Model/ProductModel");
+
 dotenv.config({
     path: './config.env',
 });
@@ -31,6 +35,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/user", UserRoutes)
 app.use("/api/user", SellerRoute)
+// app.post("/uploadDetails", async (req, res) => {
+//     try {
+//         const newItem = await Cart.create({
+//             name: req.body.name,
+//             price: req.body.price,
+//             quantity: req.body.quantity,
+//             image: req.body.image,
+//         });
+//         res.status(200).json({
+//             status: "SUCCESS",
+//             payload: newItem
+//         })
+//     } catch (err) {
+//         res.status(404).json({
+//             status: "BAD REQUEST",
+//             message: err.message
+//         })
+//     }
+// })
 
 app.listen(port, () => {
     console.log(`Server is Running on http://localhost:${port}`);

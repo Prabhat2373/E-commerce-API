@@ -9,7 +9,7 @@ exports.AddProduct = async (req, res, next) => {
             desc: req.body.desc,
             price: req.body.price,
             stock: req.body.stock,
-            img: req.body.img,
+            file: req.body.file,
         });
         res.status(200).json({
             status: "SUCCESS",

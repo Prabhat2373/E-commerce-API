@@ -21,15 +21,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         username: req.body.username,
         isSeller: false,
     });
-    // await upload(req, res);
-    // console.log(req.files);
-    // console.log("BODY :", req.body);
-
-    // if (req.files.length <= 0) {
-    //     return res
-    //         .status(400)
-    //         .send({ message: "You must select at least 1 file." });
-    // }
 
     const token = signToken(RegisterUser._id);
 
@@ -37,7 +28,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         status: 'SUCCESS',
         token: token,
         data: RegisterUser,
-        message: "File is Uploaded"
     });
     next();
 });
