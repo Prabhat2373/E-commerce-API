@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/AppError")
 const Cart = require("../Model/CartModel");
+const upload = require("../middlewere/upload.js")
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -12,11 +13,14 @@ const signToken = (id) => {
 
 exports.AddToCart = async (req, res, next) => {
     try {
+        await upload(req, res);
         const NewCartItem = await Cart.create({
             productName: req.body.productName,
             productPrice: req.body.productPrice,
             quantity: req.body.quantity,
+            file: req.body.file,
         });
+
         res.status(200).json({
             status: "SUCCESS",
             payload: NewCartItem
