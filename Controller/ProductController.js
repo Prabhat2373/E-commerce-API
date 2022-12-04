@@ -1,7 +1,13 @@
 const uploadFilesMiddleware = require("../middlewere/upload");
 const upload = require("../middlewere/upload");
+const MongoClient = require("mongodb").MongoClient;
+const GridFSBucket = require("mongodb").GridFSBucket;
 const Product = require("../Model/ProductModel");
-const BASE_URL = process.env.BASE_URL || 'http://localhost:8000/files/'
+const BASE_URL = process.env.BASE_URL || 'http://localhost:8000/api/user/getproducts/'
+const dbConfig = require("../config/db_config")
+const url = dbConfig.url;
+const mongoClient = new MongoClient(url);
+
 
 exports.AddProduct = async (req, res, next) => {
     try {
@@ -16,9 +22,8 @@ exports.AddProduct = async (req, res, next) => {
             desc: req.body.desc,
             price: req.body.price,
             stock: req.body.stock,
-            image: req.filename,
+            image: req.files[0].filename,
         });
-        console.log(req);
         res.status(200).json({
             status: "SUCCESS",
             payload: NewProduct,
@@ -33,13 +38,24 @@ exports.AddProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
     try {
-        const AllProducts = await Product.find();
-        const { image } = AllProducts[0]
-        console.log(image);
+        const Products = await Product.find({});
+        // console.log("Products");
+        // const { image } = Products
+        console.log("Before Map :", Products);
+        const AllProducts = Products.map(el => {
+            if (el.image) {
+                return { ...el, image: BASE_URL + el.image };
+            }
+
+            return el;
+        })
+        // el.image = BASE_URL + el.image
+
+        console.log("AllProducts :", AllProducts);
         res.status(200).json({
             status: "SUCCESS",
             payload: {
-                imageUrl: BASE_URL + image,
+                imageUrl: BASE_URL,
                 AllProducts
             }
         })
@@ -50,3 +66,35 @@ exports.getProducts = async (req, res, next) => {
         })
     }
 }
+
+exports.download = async (req, res) => {
+    try {
+        await mongoClient.connect();
+
+        const database = mongoClient.db(dbConfig.database);
+        // console.log("DB :", database);
+        const bucket = new GridFSBucket(database, {
+            bucketName: dbConfig.imgBucket,
+        });
+        // console.log("BUCKET :", bucket);
+        let downloadStream = bucket.openDownloadStreamByName(req.params.name);
+        console.log(downloadStream);
+        downloadStream.on("data", function (data) {
+            return res.status(200).write(data);
+        });
+
+        downloadStream.on("error", function (err) {
+            return res.status(404).send({
+                message: "Cannot download the Image!" + err.message
+            });
+        });
+
+        downloadStream.on("end", () => {
+            return res.end();
+        });
+    } catch (error) {
+        return res.status(500).send({
+            message: error.message,
+        });
+    }
+};
