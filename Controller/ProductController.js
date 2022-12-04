@@ -22,7 +22,7 @@ exports.AddProduct = async (req, res, next) => {
             desc: req.body.desc,
             price: req.body.price,
             stock: req.body.stock,
-            image: req.files[0].filename,
+            image: BASE_URL + req.files[0].filename,
         });
         res.status(200).json({
             status: "SUCCESS",
@@ -38,26 +38,11 @@ exports.AddProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
     try {
-        const Products = await Product.find({});
-        // console.log("Products");
-        // const { image } = Products
-        console.log("Before Map :", Products);
-        const AllProducts = Products.map(el => {
-            if (el.image) {
-                return { ...el, image: BASE_URL + el.image };
-            }
+        const Products = await Product.find({})
 
-            return el;
-        })
-        // el.image = BASE_URL + el.image
-
-        console.log("AllProducts :", AllProducts);
         res.status(200).json({
             status: "SUCCESS",
-            payload: {
-                imageUrl: BASE_URL,
-                AllProducts
-            }
+            payload: Products
         })
     } catch (err) {
         res.status(404).json({
@@ -78,7 +63,7 @@ exports.download = async (req, res) => {
         });
         // console.log("BUCKET :", bucket);
         let downloadStream = bucket.openDownloadStreamByName(req.params.name);
-        console.log(downloadStream);
+
         downloadStream.on("data", function (data) {
             return res.status(200).write(data);
         });
