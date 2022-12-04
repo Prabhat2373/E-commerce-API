@@ -5,7 +5,7 @@ const productSchema = mongoose.Schema({
     desc: { type: String },
     price: { type: Number },
     stock: { type: Number },
-    img: { data: Buffer, contentType: String }
+    image: { type: String }
 });
 
 const Product = mongoose.model('Products', productSchema);
