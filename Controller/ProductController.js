@@ -51,6 +51,24 @@ exports.getProducts = async (req, res, next) => {
         })
     }
 }
+exports.getOneProduct = async (req, res, next) => {
+    try {
+        const ID = req.params.id
+        console.log("ID :", ID);
+
+        const Item = await Product.findById(ID);
+
+        res.status(200).json({
+            status: "SUCCESS",
+            payload: Item
+        })
+    } catch (err) {
+        res.status(404).json({
+            status: "BAD REQUEST",
+            message: err.message
+        })
+    }
+}
 
 exports.download = async (req, res) => {
     try {
