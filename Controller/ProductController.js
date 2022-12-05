@@ -1,4 +1,3 @@
-const uploadFilesMiddleware = require("../middlewere/upload");
 const upload = require("../middlewere/upload");
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -11,11 +10,7 @@ const mongoClient = new MongoClient(url);
 
 exports.AddProduct = async (req, res, next) => {
     try {
-        await upload(req, res).then((res) => {
-            console.log("RES", res);
-        }).catch((err) => {
-            console.log("ERR", err)
-        });
+        await upload(req, res)
 
         const NewProduct = await Product.create({
             name: req.body.name,

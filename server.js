@@ -35,6 +35,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/user", UserRoutes)
 app.use("/api/user", SellerRoute)
+app.get("/",(req,res)=>{
+    res.status(200).json({
+        status: "SUCCESS",
+        message:"Hello From Server"
+    })
+})
 // app.post("/uploadDetails", async (req, res) => {
 //     try {
 //         const newItem = await Cart.create({

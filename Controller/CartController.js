@@ -15,10 +15,11 @@ exports.AddToCart = async (req, res, next) => {
     try {
         await upload(req, res);
         const NewCartItem = await Cart.create({
-            productName: req.body.productName,
-            productPrice: req.body.productPrice,
+            name: req.body.name,
+            price: req.body.price,
             quantity: req.body.quantity,
-            file: req.body.file,
+            image: req.body.image,
+            
         });
 
         res.status(200).json({
