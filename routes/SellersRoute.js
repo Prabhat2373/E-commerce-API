@@ -6,7 +6,7 @@ const router = express.Router();
 const { protect } = Authentication;
 
 router.route("/beaseller").post(protect, BecameASeller);
-router.post("/product", AddProduct)
+router.route("/product").post(protect, AddProduct)
 
 const SellerRoute = router;
 

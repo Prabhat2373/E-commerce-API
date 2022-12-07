@@ -56,5 +56,5 @@ Schema.methods.correctPassword = async function (candidatePassword, userPassword
 //     return false;
 // }
 
-const User = mongoose.model('EUsers', Schema);
+const User = mongoose.model('Users', Schema);
 module.exports = User;

@@ -7,9 +7,6 @@ const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
 const bodyParser = require("body-parser");
-const Cart = require("./Model/CartModel")
-const upload = require("multer");
-const Product = require("./Model/ProductModel");
 
 dotenv.config({
     path: './config.env',

@@ -12,8 +12,7 @@ const signToken = (id) => {
 }
 
 exports.signup = catchAsync(async (req, res, next) => {
-    console.log("BODY :",req.body);
-
+    console.log("BODY :", req.body);
     const RegisterUser = await User.create({
         name: req.body.name,
         email: req.body.email,
@@ -78,11 +77,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!currentUser) {
         return next(new AppError('The user belonging to this Token does no longer exists', 401))
     }
-    // 4) Check if changed password after the JWT was issued
-    // if (currentUser.changePasswordAfter(decoded.iat)) {
-    //     return next(new AppError('User Recently Changed Password, Please Login Again', 401))
-
-    // }
 
     // Grant Access To Protected Route
     req.user = currentUser
