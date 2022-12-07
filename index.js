@@ -38,25 +38,6 @@ app.get("/",(req,res)=>{
         message:"Hello From Server"
     })
 })
-// app.post("/uploadDetails", async (req, res) => {
-//     try {
-//         const newItem = await Cart.create({
-//             name: req.body.name,
-//             price: req.body.price,
-//             quantity: req.body.quantity,
-//             image: req.body.image,
-//         });
-//         res.status(200).json({
-//             status: "SUCCESS",
-//             payload: newItem
-//         })
-//     } catch (err) {
-//         res.status(404).json({
-//             status: "BAD REQUEST",
-//             message: err.message
-//         })
-//     }
-// })
 
 app.listen(port, () => {
     console.log(`Server is Running on http://localhost:${port}`);
