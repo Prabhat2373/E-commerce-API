@@ -27,6 +27,8 @@ mongoose
     })
     .then(() => {
         console.log('DB connection SUCCESS!');
+    }).catch((err) => {
+        console.log(err.message)
     });
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
