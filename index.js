@@ -12,10 +12,11 @@ dotenv.config({
     path: './config.env',
 });
 
-const DB = process.env.DATABASE.replace(
-    '<PASSWORD>',
-    process.env.DB_PASS
-);
+// const DB = process.env.DATABASE.replace(
+//     '<PASSWORD>',
+//     process.env.DB_PASS
+// );
+const DB = process.env.DB_CLUSTER.replace('<password>', process.env.DB_PASS)
 
 mongoose
     .connect(DB, {
@@ -32,10 +33,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/user", UserRoutes)
 app.use("/api/user", SellerRoute)
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.status(200).json({
         status: "SUCCESS",
-        message:"Hello From Server"
+        message: "Hello From Server"
     })
 })
 
