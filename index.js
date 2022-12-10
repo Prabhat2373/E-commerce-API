@@ -29,19 +29,6 @@ mongoose
         console.log(err.message)
     });
 
-// const conn = mongoose.createConnection(DB, {
-//     useNewUrlParser: true, useCreateIndex: true,
-//     useFindAndModify: false,
-//     useUnifiedTopology: true,
-// });
-
-
-// conn.on('open', () => {
-//     gfs = Grid(conn.db, mongoose.mongo);
-//     gfs.collection('ProductPhotos');
-//     console.log("connection made successfully");
-// });
-
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
