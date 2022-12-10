@@ -8,7 +8,7 @@ const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
 const bodyParser = require("body-parser");
 var Grid = require('gridfs-stream');
-
+let gfs;
 dotenv.config({
     path: './config.env',
 });
@@ -17,7 +17,7 @@ dotenv.config({
 //     '<PASSWORD>',
 //     process.env.DB_PASS
 // );
-const DB = process.env.DB_CLUSTER.replace('<password>', process.env.DB_PASS)
+const DB = process.env.DB_CLUSTER
 
 mongoose
     .connect(DB, {
@@ -37,8 +37,6 @@ const conn = mongoose.createConnection(DB, {
     useUnifiedTopology: true,
 });
 
-
-let gfs;
 
 conn.once('open', () => {
     gfs = Grid(conn.db, mongoose.mongo);
