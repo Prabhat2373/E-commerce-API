@@ -40,7 +40,7 @@ const conn = mongoose.createConnection(DB, {
 
 conn.once('open', () => {
     gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
+    gfs.collection('product');
     console.log("connection made successfully");
 });
 app.use(cors())
