@@ -17,8 +17,8 @@ dotenv.config({
 //     '<PASSWORD>',
 //     process.env.DB_PASS
 // );
-const DB = process.env.DB_CLUSTER.replace('<password>', process.env.DB_PASS)
-
+// const DB = process.env.DB_CLUSTER.replace('<password>', process.env.DB_PASS)
+const DB = process.env.DATABASE;
 mongoose
     .connect(DB, {
         useNewUrlParser: true,
@@ -45,6 +45,7 @@ conn.once('open', () => {
     gfs.collection('uploads');
     console.log("connection made successfully");
 });
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
