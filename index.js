@@ -17,7 +17,7 @@ dotenv.config({
 //     '<PASSWORD>',
 //     process.env.DB_PASS
 // );
-const DB = process.env.DB_CLUSTER
+const DB = process.env.DATABASE 
 
 mongoose
     .connect(DB, {
@@ -40,7 +40,7 @@ const conn = mongoose.createConnection(DB, {
 
 conn.once('open', () => {
     gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('product');
+    gfs.collection('ProductPhotos');
     console.log("connection made successfully");
 });
 app.use(cors())
