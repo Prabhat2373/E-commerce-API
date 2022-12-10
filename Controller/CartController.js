@@ -15,7 +15,7 @@ exports.AddToCart = async (req, res, next) => {
     try {
         const ID = req.params.id;
         const CartProduct = await Product.findById(ID);
-        await Cart.create({ ...CartProduct, quantity: req.body.quantity });
+        await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity });
 
         console.log(ID);
         console.log({ ...CartProduct._doc, quantity: req.body.quantity });
