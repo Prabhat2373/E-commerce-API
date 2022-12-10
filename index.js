@@ -31,13 +31,16 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
-const conn = mongoose.createConnection(DB, { useNewUrlParser: true });
+const conn = mongoose.createConnection(DB, {
+    useNewUrlParser: true, useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+});
 
 
 let gfs;
 
 conn.once('open', () => {
-    
     gfs = Grid(conn.db, mongoose.mongo);
     gfs.collection('uploads');
     console.log("connection made successfully");
