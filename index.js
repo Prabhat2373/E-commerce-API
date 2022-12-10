@@ -7,6 +7,7 @@ const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
 const bodyParser = require("body-parser");
+var Grid = require('gridfs-stream');
 
 dotenv.config({
     path: './config.env',
@@ -30,6 +31,17 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
+const conn = mongoose.createConnection(DB, { useNewUrlParser: true });
+
+
+let gfs;
+
+conn.once('open', () => {
+    
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+    console.log("connection made successfully");
+});
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
