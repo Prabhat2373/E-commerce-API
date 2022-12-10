@@ -5,7 +5,11 @@ const dbConfig = require("../config/db_config");
 
 var storage = new GridFsStorage({
   url: dbConfig.url + dbConfig.database,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
+  options: {
+    useNewUrlParser: true, useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  },
   file: (req, file) => {
     const match = ["image/png", "image/jpeg"];
 

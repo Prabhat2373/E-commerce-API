@@ -13,11 +13,8 @@ dotenv.config({
     path: './config.env',
 });
 
-// const DB = process.env.DATABASE.replace(
-//     '<PASSWORD>',
-//     process.env.DB_PASS
-// );
-const DB = process.env.DATABASE 
+const DB = process.env.DB_CLUSTER;
+// const DB = process.env.DATABASE 
 
 mongoose
     .connect(DB, {
@@ -31,6 +28,7 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
+
 const conn = mongoose.createConnection(DB, {
     useNewUrlParser: true, useCreateIndex: true,
     useFindAndModify: false,
@@ -38,7 +36,7 @@ const conn = mongoose.createConnection(DB, {
 });
 
 
-conn.once('open', () => {
+conn.on('open', () => {
     gfs = Grid(conn.db, mongoose.mongo);
     gfs.collection('ProductPhotos');
     console.log("connection made successfully");
