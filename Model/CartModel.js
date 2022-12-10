@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema({
-    productName: {
+    name: {
         type: String,
         required: [true, 'Name of Product is a MUST']
     },
-    productPrice: {
+    desc: { type: String },
+    price: {
         type: Number,
         required: [true, 'provide price please']
     },
@@ -13,12 +14,9 @@ const Schema = mongoose.Schema({
         type: Number,
         required: [true, 'please provide quantity']
     },
-    img: {
-        data: Buffer,
-        contentType: String,
-    }
-})
+    image: { type: String },
 
+})
 
 const CartModel = mongoose.model('cart', Schema);
 module.exports = CartModel

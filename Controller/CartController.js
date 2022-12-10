@@ -1,7 +1,7 @@
 const { promisify } = require('util')
 const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
-const AppError = require("../utils/AppError")
+const Product = require("../Model/ProductModel.js");
 const Cart = require("../Model/CartModel");
 const upload = require("../middlewere/upload.js")
 
@@ -13,18 +13,15 @@ const signToken = (id) => {
 
 exports.AddToCart = async (req, res, next) => {
     try {
-        await upload(req, res);
-        const NewCartItem = await Cart.create({
-            name: req.body.name,
-            price: req.body.price,
-            quantity: req.body.quantity,
-            image: req.body.image,
-            
-        });
+        const ID = req.params.id;
+        const CartProduct = await Product.findById(ID);
+        // await Cart.create({ ...CartProduct, quantity: req.body.quantity });
 
+        console.log(ID);
+        console.log({ ...CartProduct._doc, quantity: req.body.quantity });
         res.status(200).json({
             status: "SUCCESS",
-            payload: NewCartItem
+            message: "Added To Cart Successfully"
         })
     } catch (err) {
         res.status(400).json({

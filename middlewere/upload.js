@@ -22,12 +22,6 @@ conn.once('open', () => {
 });
 
 var storage = new GridFsStorage({
-  // url: dbConfig.url + dbConfig.database,
-  // options: {
-  //   useNewUrlParser: true, useCreateIndex: true,
-  //   useFindAndModify: false,
-  //   useUnifiedTopology: true,
-  // },
   db: promise,
   file: (req, file) => {
     const match = ["image/png", "image/jpeg"];

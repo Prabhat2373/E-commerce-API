@@ -10,7 +10,7 @@ const upload = require('multer')();
 router.post("/signup", signup);
 router.post("/login", login);
 router.route("/all").get(protect, getAllUsers);
-router.route("/createcart",).post(AddToCart)
+router.route("/cart/:id",).post(AddToCart)
 router.route("/cart").get(GetCartItems);
 router.route("/products").get(getProducts);
 router.route("/product/:id").get(getOneProduct);
