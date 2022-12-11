@@ -1,16 +1,15 @@
 const express = require("express");
 const { getAllUsers } = require("../Controller/ApiController");
 const Authentication = require("../Controller/AuthenticationController");
-const { AddToCart, GetCartItems } = require("../Controller/CartController");
+const { AddToCart, GetCartItems, removeCartItem } = require("../Controller/CartController");
 const { getProducts, download, getOneProduct } = require("../Controller/ProductController");
 const router = express.Router();
 const { signup, login, protect } = Authentication;
-const upload = require('multer')();
 
 router.post("/signup", signup);
 router.post("/login", login);
 router.route("/all").get(protect, getAllUsers);
-router.route("/cart/:id",).post(AddToCart)
+router.route("/cart/:id").post(AddToCart).delete(removeCartItem)
 router.route("/cart").get(GetCartItems);
 router.route("/products").get(getProducts);
 router.route("/product/:id").get(getOneProduct);
