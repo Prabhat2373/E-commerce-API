@@ -18,6 +18,9 @@ exports.AddProduct = async (req, res, next) => {
             price: req.body.price,
             stock: req.body.stock,
             image: BASE_URL + req.files[0].filename,
+            brand: req.body.brand,
+            ratings: req.body.ratings,
+            category: req.body.category,
         });
         res.status(200).json({
             status: "SUCCESS",
@@ -34,11 +37,28 @@ exports.AddProduct = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
     try {
         const Products = await Product.find({})
-
-        res.status(200).json({
+        const filters = req.query;
+        if (!filters) {
+            res.status(200).json({
+                status: "SUCCESS",
+                payload: Products
+            })
+        }
+        var FilteredProducts = Products.filter(product => {
+            let isValid = true;
+            for (key in filters) {
+                // console.log(key, product[key], filters[key]);
+                isValid = isValid && product[key] == filters[key];
+            }
+            return isValid;
+        });
+        res.json({
             status: "SUCCESS",
-            payload: Products
+            payload: FilteredProducts
         })
+
+        console.log(FilteredProducts);
+
     } catch (err) {
         res.status(404).json({
             status: "BAD REQUEST",
@@ -50,7 +70,7 @@ exports.getOneProduct = async (req, res, next) => {
     try {
         const ID = req.params.id
         const Item = await Product.findById(ID);
-        
+
         res.status(200).json({
             status: "SUCCESS",
             payload: Item
