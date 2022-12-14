@@ -12,7 +12,7 @@ const signToken = (id) => {
 }
 
 exports.signup = catchAsync(async (req, res, next) => {
-    console.log("BODY :", req.body);
+    // console.log("BODY :", req.body);
     await upload(req, res)
     const RegisterUser = await User.create({
         name: req.body.name,
@@ -32,6 +32,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     next();
 });
 exports.login = catchAsync(async (req, res, next) => {
+    await upload(req, res);
     const { email, password } = req.body;
 
     // 1) check email and passwords exists
