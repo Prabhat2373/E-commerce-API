@@ -13,6 +13,7 @@ const signToken = (id) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
     console.log("BODY :", req.body);
+    await upload(req, res)
     const RegisterUser = await User.create({
         name: req.body.name,
         email: req.body.email,
