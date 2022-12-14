@@ -41,7 +41,7 @@ exports.getProducts = async (req, res, next) => {
         if (!filters) {
             res.status(200).json({
                 status: "SUCCESS",
-                payload: Products
+                payload: Products,
             })
         }
         var FilteredProducts = Products.filter(product => {

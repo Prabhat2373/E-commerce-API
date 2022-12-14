@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const upload = require("../middlewere/upload");
+const BASE_URL = process.env.BASE_URL || 'https://w-shop.onrender.com/api/user/getproducts/';
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -11,25 +12,47 @@ const signToken = (id) => {
     })
 }
 
+const createSendToken = (user, statusCode, res) => {
+    const token = signToken(user._id);
+    const CookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true
+    }
+    if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
+
+    user.password = undefined;
+
+    res.cookie('jwt', token, CookieOptions);
+    res.cookie('user_email', user.email, CookieOptions)
+    res.status(statusCode).json({
+        status: "SUCCESS",
+        token,
+        data: {
+            user
+        }
+    })
+}
+
 exports.signup = catchAsync(async (req, res, next) => {
-    // console.log("BODY :", req.body);
     await upload(req, res)
     const RegisterUser = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         username: req.body.username,
-        isSeller: false,
+        isSeller: req.body.isSeller,
+        image: BASE_URL + req.files[0].filename
     });
 
-    const token = signToken(RegisterUser._id);
+    createSendToken(RegisterUser, 201, res);
 
-    res.status(201).json({
-        status: 'SUCCESS',
-        token: token,
-        data: RegisterUser,
-    });
-    next();
+    // res.status(201).json({
+    //     status: 'SUCCESS',
+    //     token: token,
+    //     data: RegisterUser,
+    // });
+    // next();
 });
 exports.login = catchAsync(async (req, res, next) => {
     await upload(req, res);
@@ -88,7 +111,6 @@ exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             return next(new AppError('You do not have permission to perform this action', 403));
-
         }
         next()
     }

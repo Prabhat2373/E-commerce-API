@@ -27,7 +27,9 @@ const Schema = mongoose.Schema({
     },
     isSeller: {
         type: Boolean,
-    }
+        default: false
+    },
+    image: { type: String }
 });
 
 Schema.pre("save", async function (next) {

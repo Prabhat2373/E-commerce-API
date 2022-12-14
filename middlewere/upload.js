@@ -24,7 +24,7 @@ conn.once('open', () => {
 var storage = new GridFsStorage({
   db: promise,
   file: (req, file) => {
-    const match = ["image/png", "image/jpeg"];
+    const match = ["image/png", "image/jpeg", "svg/webp"];
 
     if (match.indexOf(file.mimetype) === -1) {
       const filename = `${Date.now()}-Images-${file.originalname}`;

@@ -6,9 +6,7 @@ const dotenv = require('dotenv');
 const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
 const SellerRoute = require("./routes/SellersRoute");
-const bodyParser = require("body-parser");
-var Grid = require('gridfs-stream');
-let gfs;
+const cookieParser = require("cookie-parser");
 dotenv.config({
     path: './config.env',
 });
@@ -29,8 +27,9 @@ mongoose
         console.log(err.message)
     });
 
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/user", UserRoutes)
 app.use("/api/user", SellerRoute)
