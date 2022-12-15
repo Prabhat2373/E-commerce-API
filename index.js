@@ -36,7 +36,8 @@ app.use("/api/user", SellerRoute)
 app.get("/", (req, res) => {
     res.status(200).json({
         status: "SUCCESS",
-        message: "Hello From Server"
+        message: "Hello From Server",
+        Cookie:req.cookies
     })
 })
 

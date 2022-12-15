@@ -24,7 +24,7 @@ const createSendToken = (user, statusCode, res) => {
     user.password = undefined;
 
     res.cookie('jwt', token, CookieOptions);
-    res.cookie('user_email', user.email, CookieOptions)
+    res.cookie('user_email', user.email, CookieOptions);
     res.status(statusCode).json({
         status: "SUCCESS",
         token,
@@ -60,8 +60,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // 1) check email and passwords exists
     if (!email || !password) {
-        // next(new AppError("Please Prove Email and Password", 400));
-        return new Error("Please Provide Email and Password", 400);
+        next(new AppError("Please Prove Email and Password", 400));
+        // return new Error("Please Provide Email and Password", 400);
         next()
     }
     // 2) check if the user exists
