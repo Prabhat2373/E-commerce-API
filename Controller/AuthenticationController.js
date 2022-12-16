@@ -77,6 +77,7 @@ exports.login = catchAsync(async (req, res, next) => {
         ),
         httpOnly: true,
     }
+    console.log(user.email);
     res.cookie('jwt', token, CookieOptions);
     res.cookie('user_email', user.email, CookieOptions);
     res.status(200).json({
