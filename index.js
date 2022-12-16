@@ -26,7 +26,7 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
-app.use(cors({ origin: process.env.PROD_URL, credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
+app.use(cors({ origin: process.env.PROD_URL && 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

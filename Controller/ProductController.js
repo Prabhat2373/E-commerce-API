@@ -22,8 +22,9 @@ exports.AddProduct = async (req, res, next) => {
             ratings: req.body.ratings,
             category: req.body.category,
         });
-        res.status(200).json({
+        res.status(201).json({
             status: "SUCCESS",
+            message:"PRODUCT HAS BEED CREATED",
             payload: NewProduct,
         })
     } catch (err) {
