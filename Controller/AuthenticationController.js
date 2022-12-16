@@ -18,7 +18,7 @@ const createSendToken = (user, statusCode, res) => {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
-        secure:true
+        secure: true
     }
     if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
 
@@ -72,6 +72,13 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // 3) if everything is ok, send token to the client
     const token = signToken(user._id);
+    const CookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true,
+    }
+    res.cookie('jwt', token, CookieOptions);
+    res.cookie('user_email', user.email, CookieOptions);
     res.status(200).json({
         status: "SUCCESS",
         message: "Login Success! User Authorized",

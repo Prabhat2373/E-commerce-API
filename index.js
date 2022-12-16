@@ -26,8 +26,7 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
-
-app.use(cors());
+app.use(cors({ origin: process.env.PROD_URL, credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -37,7 +36,7 @@ app.get("/", (req, res) => {
     res.status(200).json({
         status: "SUCCESS",
         message: "Hello From Server",
-        Cookie:req.cookies
+        Cookie: req.cookies
     })
 })
 
