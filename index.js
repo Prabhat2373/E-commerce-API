@@ -26,7 +26,8 @@ mongoose
     }).catch((err) => {
         console.log(err.message)
     });
-app.use(cors({ origin: process.env.PROD_URL && 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
+console.log(process.env.NODE_ENV);
+app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
