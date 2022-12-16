@@ -17,7 +17,8 @@ const createSendToken = (user, statusCode, res) => {
     const CookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: true
+        httpOnly: true,
+        secure:true
     }
     if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
 
@@ -35,24 +36,20 @@ const createSendToken = (user, statusCode, res) => {
 }
 
 exports.signup = catchAsync(async (req, res, next) => {
-    await upload(req, res)
+    console.log(req.file);
+    await upload(req, res);
+    console.log(req.files);
     const RegisterUser = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         username: req.body.username,
         isSeller: req.body.isSeller,
-        image: BASE_URL + req.files[0].filename
+        image: BASE_URL + req.files[0].filename ?? ''
     });
 
     createSendToken(RegisterUser, 201, res);
-
-    // res.status(201).json({
-    //     status: 'SUCCESS',
-    //     token: token,
-    //     data: RegisterUser,
-    // });
-    // next();
+    next();
 });
 exports.login = catchAsync(async (req, res, next) => {
     await upload(req, res);
@@ -60,8 +57,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // 1) check email and passwords exists
     if (!email || !password) {
-        next(new AppError("Please Prove Email and Password", 400));
-        // return new Error("Please Provide Email and Password", 400);
+        // next(new AppError("Please Prove Email and Password", 400));
+        return new Error("Please Provide Email and Password", 400);
         next()
     }
     // 2) check if the user exists
