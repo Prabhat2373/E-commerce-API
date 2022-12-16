@@ -17,7 +17,9 @@ const createSendToken = (user, statusCode, res) => {
     const CookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: false,
+        httpOnly: process.env.NODE_ENV !== 'developement',
+        sameSite: "none",
+        domain: "https://e-commerce-web-opal.vercel.app"
     }
     if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
 
