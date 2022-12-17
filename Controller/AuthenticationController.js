@@ -19,10 +19,14 @@ const createSendToken = (user, statusCode, res) => {
         ),
         httpOnly: process.env.NODE_ENV !== 'developement',
         sameSite: "none",
-        domain: "https://e-commerce-web-opal.vercel.app",
+        SameSite:"None",
+        domain: "http://localhost:3000",
         secure: process.env.NODE_ENV !== 'developement'
     }
-    if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
+    if (process.env.NODE_ENV === 'production') {
+        CookieOptions.secure = true;
+        CookieOptions.domain = 'https://e-commerce-web-opal.vercel.app'  // in this method cookie only be send in HTTPS request
+    }
 
     user.password = undefined;
 
