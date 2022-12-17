@@ -19,7 +19,8 @@ const createSendToken = (user, statusCode, res) => {
         ),
         httpOnly: process.env.NODE_ENV !== 'developement',
         SameSite: "none",
-        domain: "https://e-commerce-web-opal.vercel.app"
+        domain: "https://e-commerce-web-opal.vercel.app",
+        Secure: process.env.NODE_ENV !== 'developement'
     }
     if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;  // in this method cookie only be send in HTTPS request
     console.log(CookieOptions);
