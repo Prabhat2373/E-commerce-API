@@ -31,6 +31,14 @@ app.use(cookieParser());
 
 app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.set("trust proxy", 1)
+app.use(cookieSession({
+    name: 'userInfo',
+    secret: 'user-secret',
+    domain: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000',
+    sameSite: 'none',
+    secure: true,
+    httpOnly: true
+  }));
 app.use(function (req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
     res.header('Access-Control-Allow-Credentials', true)
