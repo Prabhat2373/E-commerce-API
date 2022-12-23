@@ -19,7 +19,7 @@ const createSendToken = (user, statusCode, res) => {
         ),
         httpOnly: process.env.NODE_ENV !== 'developement',
         sameSite: "none",
-        SameSite:"None",
+        SameSite: "None",
         domain: "http://localhost:3000",
         secure: process.env.NODE_ENV !== 'developement'
     }
@@ -60,6 +60,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
     await upload(req, res);
     const { email, password } = req.body;
+    const jwt = req.cookies.jwt;
 
     // 1) check email and passwords exists
     if (!email || !password) {
@@ -125,4 +126,17 @@ exports.restrictTo = (...roles) => {
         }
         next()
     }
+}
+exports.logout = async (req, res, next) => {
+    try {
+        const token = req.cookies.jwt ?? undefined;
+        const email = req.cookies.user_email ?? undefined;
+        if (!token) res.status(404).json({ status: "BAD REQUEST", message: "YOU NEED TO LOG IN FIRST" })
+        res.clearCookie("jwt");
+        res.clearCookie("user_email");
+        res.status(200).json({ status: "OK", message: "LOGGED OUT" })
+    } catch (err) {
+        console.log(err.message)
+    }
+    next();
 }

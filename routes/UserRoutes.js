@@ -15,5 +15,5 @@ router.route("/cart").get(GetCartItems);
 router.route("/products").get(getProducts);
 router.route("/product/:id").get(getOneProduct);
 router.route("/getproducts/:name").get(download);
-
+router.route("/logout").post(Authentication.logout)
 module.exports = router;
