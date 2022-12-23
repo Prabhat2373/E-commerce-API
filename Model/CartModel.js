@@ -15,7 +15,10 @@ const Schema = mongoose.Schema({
         required: [true, 'please provide quantity']
     },
     image: { type: String },
-
+    sellerId: {
+        type: String,
+        default: ''
+    }
 })
 
 const CartModel = mongoose.model('cart', Schema);

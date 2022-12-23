@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
 const Product = require("../Model/ProductModel.js");
 const Cart = require("../Model/CartModel");
+const user = require("../Model/UserModel")
 const upload = require("../middlewere/upload.js")
 
 const signToken = (id) => {
@@ -15,6 +16,8 @@ exports.AddToCart = async (req, res, next) => {
     try {
         const ID = req.params.id;
         const CartProduct = await Product.findById(ID);
+        const seller = await user.find({ email: req.cookies.user_email });
+        console.log(seller);
 
         if (await Cart.findById(CartProduct._id)) {
             await Cart.findOneAndUpdate({ ...CartProduct._doc }, {
@@ -25,7 +28,9 @@ exports.AddToCart = async (req, res, next) => {
                 message: "Cart Has Been Updated"
             })
         }
-        await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity });
+
+
+        await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity, sellerId: seller[0]._id });
 
         res.status(200).json({
             status: "SUCCESS",
@@ -40,10 +45,15 @@ exports.AddToCart = async (req, res, next) => {
 }
 exports.GetCartItems = async (req, res, next) => {
     try {
+        const seller = await user.find({ email: req.cookies.user_email });
         const CartItems = await Cart.find();
+        console.log(seller[0]._id);
+        console.log("---------");
+        const cart = CartItems.filter((el) => el.sellerId == seller[0]._id);
+        console.log("CART ITEM :", cart);
         res.status(200).json({
             status: "SUCCESS",
-            payload: CartItems
+            payload: cart
         })
     } catch (err) {
         res.status(400).json({
