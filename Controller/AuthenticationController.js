@@ -17,7 +17,7 @@ const createSendToken = (user, statusCode, res) => {
     const CookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: process.env.NODE_ENV !== 'developement',
+        httpOnly: process.env.NODE_ENV !== 'developement' ?? false,
         sameSite: "none",
         SameSite: "None",
         domain: "http://localhost:3000",
@@ -82,7 +82,7 @@ exports.login = catchAsync(async (req, res, next) => {
     const CookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: true,
+        httpOnly: false,
     }
     console.log(user.email);
     res.cookie('jwt', token, CookieOptions);
