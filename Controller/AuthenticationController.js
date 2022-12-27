@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const upload = require("../middlewere/upload");
-const BASE_URL = process.env.BASE_URL || 'https://w-shop.onrender.com/api/user/getproducts/';
+exports.BASE_URL = process.env.BASE_URL || 'https://w-shop.onrender.com/api/user/getproducts/';
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -12,7 +12,7 @@ const signToken = (id) => {
     })
 }
 
-const createSendToken = (user, statusCode, res) => {
+exports.createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
     const CookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -51,10 +51,10 @@ exports.signup = catchAsync(async (req, res, next) => {
         password: req.body.password,
         username: req.body.username,
         isSeller: req.body.isSeller,
-        image: BASE_URL + req.files[0].filename ?? ''
+        image: this.BASE_URL + req.files[0].filename ?? ''
     });
 
-    createSendToken(RegisterUser, 201, res);
+    this.createSendToken(RegisterUser, 201, res);
     next();
 });
 exports.login = catchAsync(async (req, res, next) => {
@@ -130,7 +130,7 @@ exports.restrictTo = (...roles) => {
 exports.logout = async (req, res, next) => {
     try {
         const token = req.cookies.jwt ?? undefined;
-        const email = req.cookies.user_email ?? undefined;
+ 
         if (!token) res.status(404).json({ status: "BAD REQUEST", message: "YOU NEED TO LOG IN FIRST" })
         res.clearCookie("jwt");
         res.clearCookie("user_email");

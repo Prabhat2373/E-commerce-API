@@ -47,9 +47,7 @@ exports.GetCartItems = async (req, res, next) => {
     try {
         const seller = await user.find({ email: req.cookies.user_email });
         const CartItems = await Cart.find();
-        console.log(seller[0]._id);
-        console.log("---------");
-        const cart = CartItems.filter((el) => el.sellerId == seller[0]._id);
+        const cart = CartItems.filter((el) => el.sellerId == seller[0]._id ?? []);
         console.log("CART ITEM :", cart);
         res.status(200).json({
             status: "SUCCESS",

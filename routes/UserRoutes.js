@@ -3,6 +3,7 @@ const { getAllUsers, getUser } = require("../Controller/ApiController");
 const Authentication = require("../Controller/AuthenticationController");
 const { AddToCart, GetCartItems, removeCartItem } = require("../Controller/CartController");
 const { getProducts, download, getOneProduct } = require("../Controller/ProductController");
+const { UpdateUser } = require("../Controller/UserController");
 const router = express.Router();
 const { signup, login, protect } = Authentication;
 
@@ -16,4 +17,5 @@ router.route("/products").get(getProducts);
 router.route("/product/:id").get(getOneProduct);
 router.route("/getproducts/:name").get(download);
 router.route("/logout").post(Authentication.logout)
+router.route("/update").put(UpdateUser)
 module.exports = router;

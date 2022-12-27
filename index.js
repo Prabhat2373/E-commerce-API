@@ -27,10 +27,9 @@ mongoose
         console.log(err.message)
     });
 console.log(process.env.NODE_ENV);
+app.set("trust proxy", 1)
 app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.use(cookieParser());
-
-app.set("trust proxy", 1)
 
 app.use(function (req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
