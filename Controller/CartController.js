@@ -15,32 +15,40 @@ const signToken = (id) => {
 exports.AddToCart = async (req, res, next) => {
     try {
         const ID = req.params.id;
-        const CartProduct = await Product.findById(ID);
+        const CartProduct = await Product.findById(ID).select("-_id");
         const seller = await user.find({ email: req.cookies.user_email });
         console.log(seller);
+        console.log("PRODUCT:",CartProduct._doc);
 
         if (await Cart.findById(CartProduct._id)) {
-            await Cart.findOneAndUpdate({ ...CartProduct._doc }, {
+            console.log("CART EXISTS");
+    
+
+            const UpdatedCartItem = await Cart.findOneAndUpdate({ sellerId:seller[0]._id }, {
                 $inc: { quantity: +1 }
             }, { new: true });
             res.status(200).json({
                 status: "SUCCESS",
                 message: "Cart Has Been Updated"
             })
+            console.log("UPDATED ITEM :", UpdatedCartItem)
         }
+        else {
+            const Item = await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity, sellerId: seller[0]._id });
+            console.log("New Item:",Item)
 
-
-        await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity, sellerId: seller[0]._id });
-
-        res.status(200).json({
-            status: "SUCCESS",
-            message: "Added To Cart Successfully"
-        })
+            res.status(200).json({
+                status: "SUCCESS",
+                message: "Added To Cart Successfully"
+            })
+            next()
+        }
     } catch (err) {
         res.status(400).json({
             status: "BAD REQUEST",
             message: err.message
         })
+        next()
     }
 }
 exports.GetCartItems = async (req, res, next) => {

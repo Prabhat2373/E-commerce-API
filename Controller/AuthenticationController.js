@@ -20,7 +20,7 @@ exports.createSendToken = (user, statusCode, res) => {
         httpOnly: process.env.NODE_ENV !== 'developement' ?? false,
         sameSite: "none",
         SameSite: "None",
-        domain: "http://localhost:3000",
+        domain: process.env.NODE_ENV !== "developement" ? "https://e-commerce-web-opal.vercel.app/login" : "http://localhost:3000",
         secure: process.env.NODE_ENV !== 'developement'
     }
     if (process.env.NODE_ENV === 'production') {
@@ -130,7 +130,7 @@ exports.restrictTo = (...roles) => {
 exports.logout = async (req, res, next) => {
     try {
         const token = req.cookies.jwt ?? undefined;
- 
+
         if (!token) res.status(404).json({ status: "BAD REQUEST", message: "YOU NEED TO LOG IN FIRST" })
         res.clearCookie("jwt");
         res.clearCookie("user_email");
