@@ -18,4 +18,5 @@ router.route("/product/:id").get(getOneProduct);
 router.route("/getproducts/:name").get(download);
 router.route("/logout").post(Authentication.logout)
 router.route("/update").put(UpdateUser)
+
 module.exports = router;
