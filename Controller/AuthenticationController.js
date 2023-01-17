@@ -25,8 +25,9 @@ exports.createSendToken = (user, statusCode, res) => {
     };
     if (process.env.NODE_ENV !== "developement") {
         CookieOptions.secure = true,
-        CookieOptions.domain = "https://e-commerce-web-opal.vercel.app/"; // in this method cookie only be send in HTTPS request
-        CookieOptions.sameSite = "none";
+            CookieOptions.httpOnly = true,
+            CookieOptions.domain = "https://e-commerce-web-opal.vercel.app/"; // in this method cookie only be send in HTTPS request
+        CookieOptions.sameSite = "lax";
     }
 
     user.password = undefined;
