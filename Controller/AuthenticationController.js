@@ -27,7 +27,8 @@ exports.createSendToken = (user, statusCode, res) => {
         CookieOptions.secure = true,
             CookieOptions.httpOnly = true,
             CookieOptions.domain = "https://e-commerce-web-opal.vercel.app/"; // in this method cookie only be send in HTTPS request
-        CookieOptions.sameSite = "lax";
+        CookieOptions.sameSite = "none";
+        CookieOptions.SameSite = "None"
     }
 
     user.password = undefined;
