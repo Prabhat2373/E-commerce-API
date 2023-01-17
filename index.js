@@ -28,7 +28,7 @@ mongoose
     });
 console.log(process.env.NODE_ENV);
 app.set("trust proxy", 1)
-app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
+app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag','SameSite'] }))
 app.use(cookieParser());
 
 app.use(function (req, res, next) {
