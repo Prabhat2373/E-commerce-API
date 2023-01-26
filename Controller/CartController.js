@@ -17,8 +17,8 @@ exports.AddToCart = async (req, res, next) => {
         const ID = req.params.id;
         const CartProduct = await Product.findById(ID).select("-_id");
         const seller = await user.find({ email: req.cookies.user_email });
-        console.log(seller);
-        console.log("PRODUCT:",CartProduct._doc);
+        // console.log(seller);
+        // console.log("PRODUCT:",CartProduct._doc);
 
         if (await Cart.findById(CartProduct._id)) {
             console.log("CART EXISTS");
@@ -53,10 +53,11 @@ exports.AddToCart = async (req, res, next) => {
 }
 exports.GetCartItems = async (req, res, next) => {
     try {
+        
         const seller = await user.find({ email: req.cookies.user_email });
         const CartItems = await Cart.find();
         const cart = CartItems.filter((el) => el.sellerId == seller[0]._id ?? []);
-        console.log("CART ITEM :", cart);
+        // console.log("CART ITEM :", cart);
         res.status(200).json({
             status: "SUCCESS",
             payload: cart

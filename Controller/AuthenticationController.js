@@ -33,34 +33,42 @@ exports.createSendToken = (user, statusCode, res) => {
 
     user.password = undefined;
 
-    res.cookie("jwt", token, CookieOptions);
-    res.cookie("user_email", user.email, CookieOptions);
-    res.localStorage("jwt", token);
+    // res.cookie("jwt", token, CookieOptions);
+    // res.cookie("user_email", user.email, CookieOptions);
+    // res.localStorage("jwt", token);
     res.status(statusCode).json({
         status: "SUCCESS",
         token,
-        data: {
-            user,
-        },
+        data: user,
     });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     console.log(req.file);
     await upload(req, res);
     console.log(req.files);
+    const { name, email, password, username, isSeller } = req.body;
+    if (!(name && email && password && isSeller)) res.status(404).json({
+        status: "BAD REQUEST",
+        message: "ALL FIELDS ARE REQUIRED"
+    })
+    const ExistingUser = await User.findOne({ email });
+    if (ExistingUser) res.status(400).json({
+        status: "BAD REQUEST",
+        message: "USER ALREADY EXISTS! Please Login"
+    })
     const RegisterUser = await User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-        isSeller: req.body.isSeller,
-        image: this.BASE_URL + req.files[0].filename ?? "",
+        name: name,
+        username: username,
+        email: email.toLowerCase(), // sanitize
+        password: password,
+        isSeller: isSeller,
+        image: this.BASE_URL + req.files[0].filename ?? ""
     });
 
     this.createSendToken(RegisterUser, 201, res);
-    next();
-});
+    // next();
+};
 exports.login = catchAsync(async (req, res, next) => {
     await upload(req, res);
     const { email, password } = req.body;
@@ -95,7 +103,7 @@ exports.login = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "SUCCESS",
         message: "Login Success! User Authorized",
-        isSeller: user,
+        user,
         token,
     });
 });

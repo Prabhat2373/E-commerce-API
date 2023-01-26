@@ -1,5 +1,6 @@
 const express = require("express");
 const Users = require("../Model/UserModel");
+const upload = require("../middlewere/upload");
 
 exports.getAllUsers = async (req, res, next) => {
     try {
@@ -17,15 +18,19 @@ exports.getAllUsers = async (req, res, next) => {
     }
 }
 exports.getUser = async (req, res, next) => {
-    try{
-        const Email = req.cookies.user_email;
-        const user = await Users.find({email:Email})
-        console.log(user);
+    try {
+        await upload(req, res);
+        const { email } = req.params;
+        console.log("USER EMAIL :", email);
+        console.log("BODY :", req.body);
+        // console.log("LOCAL STORAGE :", localStorage.getItem("user_email"));
+        const user = await Users.find({ email })
+        console.log("USER :", user);
         res.status(200).json({
             status: "SUCCESS",
-            payload:user
+            payload: user
         })
-    }catch (err) {
+    } catch (err) {
         res.status(400).json({
             status: "BAD REQUEST",
             message: err.message

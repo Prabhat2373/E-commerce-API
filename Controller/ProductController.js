@@ -58,7 +58,7 @@ exports.getProducts = async (req, res, next) => {
             payload: FilteredProducts
         })
 
-        console.log(FilteredProducts);
+        // console.log(FilteredProducts);
 
     } catch (err) {
         res.status(404).json({

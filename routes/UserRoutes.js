@@ -10,7 +10,7 @@ const { signup, login, protect } = Authentication;
 router.post("/signup", signup);
 router.post("/login", login);
 router.route("/all").get(protect, getAllUsers);
-router.route("/user").get(getUser)
+router.route("/user/:email").get(getUser)
 router.route("/cart/:id").post(AddToCart).delete(removeCartItem)
 router.route("/cart").get(GetCartItems);
 router.route("/products").get(getProducts);
