@@ -3,9 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const port = process.env.PORT || 8000;
 const dotenv = require('dotenv');
-const UserRoutes = require('./routes/UserRoutes')
 const cors = require('cors');
-const SellerRoute = require("./routes/SellersRoute");
+
 const cookieParser = require("cookie-parser");
 dotenv.config({
     path: './config.env',
@@ -27,8 +26,19 @@ mongoose
         console.log(err.message)
     });
 console.log(process.env.NODE_ENV);
+
+// ROUTES IMPORT 
+const SellerRoute = require("./routes/SellersRoute");
+const OrderRoute = require("./routes/OrderRoute");
+const UserRoutes = require('./routes/UserRoutes')
+
+// ROUTES 
+app.use("/api/user", UserRoutes)
+app.use("/api/user", SellerRoute)
+app.use("/api/user", OrderRoute)
+
 app.set("trust proxy", 1)
-app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag','SameSite'] }))
+app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag', 'SameSite'] }))
 app.use(cookieParser());
 
 app.use(function (req, res, next) {
@@ -43,8 +53,9 @@ app.use(function (req, res, next) {
 })
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/api/user", UserRoutes)
-app.use("/api/user", SellerRoute)
+
+
+
 app.get("/", (req, res) => {
     res.status(200).json({
         status: "SUCCESS",

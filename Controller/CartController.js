@@ -4,7 +4,7 @@ const catchAsync = require("./../utils/catchAsync");
 const Product = require("../Model/ProductModel.js");
 const Cart = require("../Model/CartModel");
 const user = require("../Model/UserModel")
-const upload = require("../middlewere/upload.js")
+const upload = require("../middleware/upload.js")
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -53,7 +53,7 @@ exports.AddToCart = async (req, res, next) => {
 }
 exports.GetCartItems = async (req, res, next) => {
     try {
-        
+
         const seller = await user.find({ email: req.cookies.user_email });
         const CartItems = await Cart.find();
         const cart = CartItems.filter((el) => el.sellerId == seller[0]._id ?? []);

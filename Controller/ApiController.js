@@ -1,6 +1,6 @@
 const express = require("express");
 const Users = require("../Model/UserModel");
-const upload = require("../middlewere/upload");
+const upload = require("../middleware/upload");
 
 exports.getAllUsers = async (req, res, next) => {
     try {

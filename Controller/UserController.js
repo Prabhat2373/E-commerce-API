@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const Users = require("../Model/UserModel");
 const Sellers = require("../Model/SellerModel");
-const upload = require("../middlewere/upload");
+const upload = require("../middleware/upload");
 const { BASE_URL, createSendToken } = require('./AuthenticationController');
 
 

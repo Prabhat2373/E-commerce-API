@@ -1,4 +1,4 @@
-const upload = require("../middlewere/upload");
+const upload = require("../middleware/upload");
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const Product = require("../Model/ProductModel");

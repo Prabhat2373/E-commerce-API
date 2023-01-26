@@ -3,7 +3,7 @@ const User = require("../Model/UserModel");
 const jwt = require("jsonwebtoken");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/AppError");
-const upload = require("../middlewere/upload");
+const upload = require("../middleware/upload");
 exports.BASE_URL =
     process.env.BASE_URL || "https://w-shop.onrender.com/api/user/getproducts/";
 
