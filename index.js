@@ -32,10 +32,6 @@ const SellerRoute = require("./routes/SellersRoute");
 const OrderRoute = require("./routes/OrderRoute");
 const UserRoutes = require('./routes/UserRoutes')
 
-// ROUTES 
-app.use("/api/user", UserRoutes)
-app.use("/api/user", SellerRoute)
-app.use("/api/user", OrderRoute)
 
 app.set("trust proxy", 1)
 app.use(cors({ origin: process.env.NODE_ENV === 'production' ? 'https://e-commerce-web-opal.vercel.app' : 'http://localhost:3000', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag', 'SameSite'] }))
@@ -55,6 +51,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+
+// ROUTES 
+app.use("/api/user", UserRoutes)
+app.use("/api/user", SellerRoute)
+app.use("/api/user", OrderRoute)
 
 app.get("/", (req, res) => {
     res.status(200).json({

@@ -24,7 +24,7 @@ exports.AddProduct = async (req, res, next) => {
         });
         res.status(201).json({
             status: "SUCCESS",
-            message:"PRODUCT HAS BEED CREATED",
+            message: "PRODUCT HAS BEED CREATED",
             payload: NewProduct,
         })
     } catch (err) {
