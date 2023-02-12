@@ -11,7 +11,6 @@ dotenv.config({
 });
 
 const DB = process.env.DB_CLUSTER;
-// const DB = process.env.DATABASE 
 
 mongoose
     .connect(DB, {

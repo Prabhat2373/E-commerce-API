@@ -11,7 +11,7 @@ const mongoClient = new MongoClient(url);
 exports.AddProduct = async (req, res, next) => {
     try {
         await upload(req, res)
-
+        console.log(req)
         const NewProduct = await Product.create({
             name: req.body.name,
             desc: req.body.desc,
@@ -21,6 +21,7 @@ exports.AddProduct = async (req, res, next) => {
             brand: req.body.brand,
             ratings: req.body.ratings,
             category: req.body.category,
+            sellerId: req.body.sellerId
         });
         res.status(201).json({
             status: "SUCCESS",
