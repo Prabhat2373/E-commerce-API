@@ -3,7 +3,7 @@ const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const Product = require("../Model/ProductModel");
 const BASE_URL = 'https://w-shop.onrender.com/api/user/getproducts/'
-const dbConfig = require("../config/db_config")
+const dbConfig = require("../config/db_config");
 const url = dbConfig.url;
 const mongoClient = new MongoClient(url);
 
@@ -116,3 +116,41 @@ exports.download = async (req, res) => {
         });
     }
 };
+exports.deleteProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        if (!products || products.length === 0) {
+            res.status(404).json({
+                status: "BAD REQUEST",
+                message: "NO DATA"
+            })
+        }
+        const deletedProducts = await Product.deleteMany();
+        res.status(204).json({
+            status: "SUCCESS",
+            message: "ITEMS HAS BEEN DELETED",
+            data: deletedProducts
+        })
+    } catch (error) {
+        return res.status(404).send({
+            status: "BAD REQUEST",
+            message: error.message,
+        });
+    }
+}
+exports.deleteProductById = async (req, res) => {
+    try {
+        const ID = req.params.id;
+        const deletedItem = await Product.deleteOne({ _id: ID })
+        res.json({
+            status: "SUCCESS",
+            message: "ITEM DELETED SUCCESSFULLY",
+            data: deletedItem
+        })
+    } catch (err) {
+        res.json({
+            status: "BAD REQUEST",
+            message: err.message
+        })
+    }
+}

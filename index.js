@@ -25,7 +25,7 @@ mongoose
         console.log(err.message)
     });
 console.log(process.env.NODE_ENV);
-
+        
 // ROUTES IMPORT 
 const SellerRoute = require("./routes/SellersRoute");
 const OrderRoute = require("./routes/OrderRoute");
