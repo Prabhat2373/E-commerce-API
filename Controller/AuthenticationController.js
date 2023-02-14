@@ -40,6 +40,7 @@ exports.createSendToken = (user, statusCode, res) => {
         status: "SUCCESS",
         token,
         data: user,
+        CookieOptions
     });
 };
 
