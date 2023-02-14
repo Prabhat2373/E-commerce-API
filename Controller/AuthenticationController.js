@@ -33,11 +33,10 @@ exports.createSendToken = (user, statusCode, res) => {
 
     user.password = undefined;
 
-    res.cookie("jwt", token, CookieOptions);
-    res.cookie("user_email", user.email, CookieOptions);
-    res.localStorage("jwt", token);
+    // res.cookie("jwt", token, CookieOptions);
+    // res.cookie("user_email", user.email, CookieOptions);
 
-    res.status(statusCode).json({
+    res.setHeader('Set-Cookie', [`jwt=${token}`, `user_email=${user.email}`]).status(statusCode).json({
         status: "SUCCESS",
         token,
         data: user,
@@ -99,14 +98,16 @@ exports.login = catchAsync(async (req, res, next) => {
         httpOnly: false,
     };
     console.log(user.email);
-    res.cookie("jwt", token, CookieOptions);
-    res.cookie("user_email", user.email, CookieOptions);
-    res.status(200).json({
-        status: "SUCCESS",
-        message: "Login Success! User Authorized",
-        user,
-        token,
-    });
+    // res.cookie("jwt", token, CookieOptions);
+    // res.cookie("user_email", user.email, CookieOptions);
+    // res.status(200).json({
+    //     status: "SUCCESS",
+    //     message: "Login Success! User Authorized",
+    //     user,
+    //     token,
+    // });
+    this.createSendToken(user, 200, res)
+
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
