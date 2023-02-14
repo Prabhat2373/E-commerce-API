@@ -19,7 +19,7 @@ exports.createSendToken = (user, statusCode, res) => {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: process.env.NODE_ENV !== "developement" ?? false,
+        httpOnly: process.env.NODE_ENV === "production",
         domain: "http://localhost:3000",
         secure: process.env.NODE_ENV === "production",
     };
@@ -28,7 +28,6 @@ exports.createSendToken = (user, statusCode, res) => {
             CookieOptions.httpOnly = true,
             CookieOptions.domain = "https://e-commerce-web-opal.vercel.app/"; // in this method cookie only be send in HTTPS request
         CookieOptions.sameSite = "none";
-        CookieOptions.SameSite = "None"
     }
 
     user.password = undefined;
