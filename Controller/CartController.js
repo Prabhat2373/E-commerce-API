@@ -17,25 +17,23 @@ exports.AddToCart = async (req, res, next) => {
         const ID = req.params.id;
         const CartProduct = await Product.findById(ID).select("-_id");
         const seller = await user.find({ email: req.cookies.user_email });
-        // console.log(seller);
-        // console.log("PRODUCT:",CartProduct._doc);
 
         if (await Cart.findById(CartProduct._id)) {
             console.log("CART EXISTS");
-    
 
-            const UpdatedCartItem = await Cart.findOneAndUpdate({ sellerId:seller[0]._id }, {
+
+            const UpdatedCartItem = await Cart.findOneAndUpdate({ sellerId: seller[0]._id }, {
                 $inc: { quantity: +1 }
             }, { new: true });
             res.status(200).json({
                 status: "SUCCESS",
-                message: "Cart Has Been Updated"
+                message: "Cart Has Been Updated",
+                data: UpdatedCartItem
             })
-            console.log("UPDATED ITEM :", UpdatedCartItem)
         }
         else {
             const Item = await Cart.create({ ...CartProduct._doc, quantity: req.body.quantity, sellerId: seller[0]._id });
-            console.log("New Item:",Item)
+            console.log("New Item:", Item)
 
             res.status(200).json({
                 status: "SUCCESS",

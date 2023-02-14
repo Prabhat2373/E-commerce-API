@@ -21,9 +21,9 @@ exports.createSendToken = (user, statusCode, res) => {
         ),
         httpOnly: process.env.NODE_ENV !== "developement" ?? false,
         domain: "http://localhost:3000",
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
     };
-    if (process.env.NODE_ENV !== "developement") {
+    if (process.env.NODE_ENV === "production") {
         CookieOptions.secure = true,
             CookieOptions.httpOnly = true,
             CookieOptions.domain = "https://e-commerce-web-opal.vercel.app/"; // in this method cookie only be send in HTTPS request
@@ -33,9 +33,10 @@ exports.createSendToken = (user, statusCode, res) => {
 
     user.password = undefined;
 
-    // res.cookie("jwt", token, CookieOptions);
-    // res.cookie("user_email", user.email, CookieOptions);
-    // res.localStorage("jwt", token);
+    res.cookie("jwt", token, CookieOptions);
+    res.cookie("user_email", user.email, CookieOptions);
+    res.localStorage("jwt", token);
+
     res.status(statusCode).json({
         status: "SUCCESS",
         token,
